@@ -21,6 +21,21 @@
   <img src="https://source.unsplash.com/7bwQXzbF6KE/800x500">
 
   <style>
+    :root {
+      --base: #ffc600;
+      --spacing: 10px;
+      --blur: 10px;
+    }
+
+    img {
+      padding: var(--spacing);
+      background: var(--base);
+      filter: blur(var(--blur));
+    }
+
+    .hl {
+      color: var(--base);
+    }
 
     /*
       misc styles, nothing to do with CSS variables
@@ -45,6 +60,14 @@
   </style>
 
   <script>
+    const root = document.documentElement;
+    const spacingSlider = document.getElementById("spacing");
+    const blurSlider = document.getElementById("blur");
+    const baseColorPicker = document.getElementById("base");
+
+    spacingSlider.oninput = () => root.style.setProperty(`--spacing`, `${spacingSlider.value}px`);
+    blurSlider.oninput = () => root.style.setProperty(`--blur`, `${blurSlider.value}px`);
+    baseColorPicker.oninput = () => root.style.setProperty(`--base`, `${baseColorPicker.value}`);
   </script>
 
 </body>

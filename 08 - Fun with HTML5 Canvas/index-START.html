@@ -1,19 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>HTML5 Canvas</title>
-</head>
-<body>
-<canvas id="draw" width="800" height="800"></canvas>
-<script>
-</script>
+  <head>
+    <meta charset="UTF-8" />
+    <title>HTML5 Canvas</title>
+  </head>
+  <body>
+    <canvas id="draw" width="800" height="800"></canvas>
+    <script>
+      const canvas = document.getElementById("draw");
+      const MIN_LINE_WIDTH = 10;
+      const MAX_LINE_WIDTH = 50;
+      let lineWidth = MIN_LINE_WIDTH;
+      let lineAdder = 1;
+      let leftMouseDown = false;
+      let hue = 0;
 
-<style>
-  html, body {
-    margin: 0;
-  }
-</style>
+      //setup context for drawing
+      const ctx = canvas.getContext('2d');
+      ctx.lineJoin = 'round';
+      ctx.lineCap = 'round';
 
-</body>
+      let mouse = {
+        x: null,
+        y: null,
+        prevX: null,
+        prevY: null,
+      };
+
+      canvas.addEventListener("mousemove", function (event) {
+        mouse.prevX = mouse.x;
+        mouse.prevY = mouse.y;
+        mouse.x = event.x;
+        mouse.y = event.y;
+        
+        if (leftMouseDown) {
+          //vary color
+          hue += 1;
+          ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+          
+          //vary linesize
+          lineWidth += lineAdder;
+          if (lineWidth > MAX_LINE_WIDTH || lineWidth < MIN_LINE_WIDTH) {
+            lineAdder *= -1;
+          }
+          ctx.lineWidth = lineWidth;
+
+          ctx.beginPath();
+          ctx.moveTo(mouse.prevX, mouse.prevY);
+          ctx.lineTo(mouse.x, mouse.y);
+          ctx.stroke();
+        }
+      });
+
+      canvas.addEventListener('mousedown', function (event) {
+        if (event.button === 0) {
+          leftMouseDown = true;
+        } else {
+          leftMouseDown = false;
+        }        
+      });
+
+      canvas.addEventListener('mouseup', function (event) {
+        if (event.button === 0) {
+          leftMouseDown = false;
+        }       
+      });
+      
+
+    </script>
+
+    <style>
+      html,
+      body {
+        margin: 0;
+      }
+    </style>
+  </body>
 </html>

@@ -58,6 +58,27 @@
       };
     }
 
+    const sliderImages = document.querySelectorAll('.slide-in');
+
+    function checkSlides(){
+      for(let img of sliderImages){
+        if (checkVisible(img)){
+           img.classList.add('active');
+        } else {
+          img.classList.remove('active');
+        }
+      }
+    }
+
+    function checkVisible(img){
+      const rect = img.getBoundingClientRect();
+      const viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight);
+      return !(rect.bottom < 0 || rect.top - viewHeight >= 0);
+    }
+
+    window.addEventListener('scroll', debounce(checkSlides, 5));
+    checkSlides();
+
   </script>
 
   <style>
